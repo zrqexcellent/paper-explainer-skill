@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>[页面标题] | Paper Explainer</title>
+<style>
+@keyframes _si{from{opacity:0}to{opacity:1}}
+body{opacity:0;animation:_si .15s ease .08s forwards}
+:root{
+  --bg:#f7f5f0;
+  --text:#1c1c1e;
+  --sub:#6b7280;
+  --muted:#8e8e93;
+  --border:rgba(0,0,0,0.07);
+  --surface:white;
+  --surface2:#f0ede6;
+  --accent:#0066ff;
+  --amber:#d97706;
+  --success:#16a34a;
+  --danger:#dc2626;
+  --purple:#7c3aed;
+  --orange:#ea580c;
+  --cyan:#0891b2;
+  --gold:#b07d20;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:#e5e2da;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  height:100vh;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  -webkit-font-smoothing:antialiased;
+}
+.slide{
+  width:94vw;max-width:1440px;
+  aspect-ratio:16/9;
+  background:var(--bg);
+  border-radius:16px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.08);
+  display:flex;flex-direction:column;
+  overflow:hidden;position:relative;
+}
+
+/* ── Header ── */
+.hd{
+  padding:16px 36px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+  background:var(--bg);
+  z-index:10;
+}
+.hd-left{display:flex;flex-direction:column;gap:2px}
+.hd-tag{font-size:13px;font-weight:800;color:var(--amber);letter-spacing:0.3px}
+.hd-title{font-size:22px;font-weight:800;color:var(--text)}
+.hd-title em{font-style:normal;color:var(--accent)}
+.hd-right{display:flex;align-items:center;gap:10px}
+.btn-next{
+  background:var(--accent);color:white;border:none;
+  padding:10px 24px;border-radius:12px;
+  font-size:14px;font-weight:600;cursor:pointer;
+  transition:all 0.2s;
+}
+.btn-next:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.btn-next:disabled{background:#ccc;cursor:not-allowed;transform:none;filter:none}
+.btn-reset{
+  background:var(--surface2);color:var(--sub);
+  border:1px solid var(--border);
+  padding:8px 14px;border-radius:10px;
+  font-size:13px;font-weight:600;cursor:pointer;
+  transition:all 0.2s;
+}
+.btn-reset:hover{background:#e8e5de}
+
+/* ── Body: Left + Right ── */
+.body{flex:1;display:flex;min-height:0}
+
+/* ── Left Panel ── */
+.left{
+  width:40%;padding:20px 28px;
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;gap:14px;
+  overflow-y:auto;
+}
+.left::-webkit-scrollbar{width:3px}
+.left::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.1);border-radius:2px}
+
+.section-label{
+  font-size:12px;font-weight:800;color:var(--sub);
+  letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;
+}
+.big-claim{
+  font-size:26px;font-weight:800;color:var(--text);line-height:1.45;
+}
+.em-blue{color:var(--accent)}
+.em-amber{color:var(--amber)}
+.desc-text{font-size:15px;color:var(--sub);line-height:1.8}
+.desc-text strong{color:var(--text)}
+
+/* ── Analogy Card ── */
+.analogy{
+  background:rgba(217,119,6,0.06);
+  border-left:4px solid var(--amber);
+  border-radius:10px;
+  padding:12px 16px;
+  color:var(--text);line-height:1.7;font-size:14px;
+}
+.analogy b{color:var(--amber)}
+
+/* ── Tip / Insight Card ── */
+.insight{
+  background:rgba(217,119,6,0.06);
+  border:1.5px solid rgba(217,119,6,0.2);
+  border-radius:10px;
+  padding:10px 14px;
+  font-size:14px;color:var(--text);line-height:1.6;
+}
+.insight b{color:var(--amber)}
+.tip{
+  border-radius:10px;padding:11px 14px;
+  font-size:14px;line-height:1.65;
+}
+.tip.green{background:rgba(22,163,74,0.06);border:1px solid rgba(22,163,74,0.2);color:var(--success)}
+.tip.blue{background:rgba(0,102,255,0.06);border:1px solid rgba(0,102,255,0.2);color:var(--accent)}
+.tip.amber{background:rgba(217,119,6,0.07);border:1px solid rgba(217,119,6,0.22);color:var(--amber)}
+.tip b{font-weight:800}
+
+/* ── Info Card ── */
+.info-card{
+  background:var(--surface);border-radius:12px;
+  border:1.5px solid var(--border);
+  padding:14px 18px;
+}
+.info-card .label{font-size:12px;font-weight:800;color:var(--sub);margin-bottom:6px}
+.info-card .val{font-size:14px;color:var(--text);line-height:1.7}
+
+/* ── Pill Row ── */
+.pill-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.pill{
+  font-size:11px;font-weight:600;padding:3px 10px;
+  border-radius:20px;border:1px solid var(--border);
+  background:rgba(0,0,0,0.03);color:var(--sub);
+}
+.pill-blue{background:rgba(0,102,255,0.08);color:var(--accent);border-color:rgba(0,102,255,0.15)}
+.pill-amber{background:rgba(217,119,6,0.08);color:var(--amber);border-color:rgba(217,119,6,0.15)}
+.pill-green{background:rgba(22,163,74,0.08);color:var(--success);border-color:rgba(22,163,74,0.15)}
+.arrow-sep{color:var(--muted);font-size:14px}
+
+/* ── Right Panel ── */
+.right{
+  flex:1;padding:20px 28px;
+  display:flex;flex-direction:column;gap:12px;
+  overflow:hidden;
+}
+
+/* ── Tab ── */
+.tab-group{display:flex;gap:6px;flex-shrink:0}
+.tab-btn{
+  padding:7px 18px;border-radius:10px;
+  border:1px solid rgba(0,0,0,0.1);
+  font-size:13px;font-weight:600;cursor:pointer;
+  background:var(--surface);color:var(--sub);
+  transition:all 0.15s;font-family:inherit;
+}
+.tab-btn:hover{border-color:rgba(0,0,0,0.2);color:var(--text)}
+.tab-btn.active{background:var(--text);color:white;border-color:var(--text)}
+
+/* ── Scene Card (clickable) ── */
+.scene-card{
+  background:var(--surface);border-radius:12px;
+  padding:14px 18px;border:2px solid transparent;
+  cursor:pointer;transition:all 0.2s;
+}
+.scene-card:hover{border-color:rgba(0,102,255,0.25)}
+.scene-card.active{border-color:var(--accent);background:rgba(0,102,255,0.03)}
+.scene-tag{font-size:12px;font-weight:800;color:var(--accent);margin-bottom:5px}
+.scene-name{font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px}
+.scene-desc{font-size:13px;color:var(--sub);line-height:1.5}
+
+/* ── VS Comparison ── */
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.vs-box{border-radius:14px;padding:22px 24px;display:flex;flex-direction:column}
+.vs-box.do{background:rgba(22,163,74,0.05);border:1.5px solid rgba(22,163,74,0.2)}
+.vs-box.skip{background:rgba(220,38,38,0.04);border:1.5px solid rgba(220,38,38,0.15)}
+.vs-hd{font-size:20px;font-weight:800;margin-bottom:14px}
+.vs-box.do .vs-hd{color:var(--success)}
+.vs-box.skip .vs-hd{color:var(--danger)}
+.vs-li{font-size:17px;color:var(--sub);line-height:1.8;padding-left:18px;position:relative}
+.vs-li::before{content:'•';position:absolute;left:0}
+.vs-li b{color:var(--text)}
+
+/* ── Stats ── */
+.stats{display:flex;gap:10px}
+.stat{flex:1;border-radius:10px;padding:11px 14px;text-align:center}
+.stat .sv{font-size:24px;font-weight:900}
+.stat .sl{font-size:12px;font-weight:700;margin-top:2px;color:var(--muted)}
+.stat.blue-s{background:rgba(0,102,255,0.07);border:1px solid rgba(0,102,255,0.15)}
+.stat.blue-s .sv{color:var(--accent)}
+.stat.green-s{background:rgba(22,163,74,0.07);border:1px solid rgba(22,163,74,0.15)}
+.stat.green-s .sv{color:var(--success)}
+.stat.amber-s{background:rgba(217,119,6,0.07);border:1px solid rgba(217,119,6,0.2)}
+.stat.amber-s .sv{color:var(--amber)}
+
+/* ── Progress Steps ── */
+.prog-list{display:flex;flex-direction:column;gap:0}
+.prog-item{display:flex;gap:12px;align-items:flex-start;opacity:.3;transition:opacity .35s}
+.prog-item.done{opacity:1}
+.prog-item.cur{opacity:1}
+.prog-dot-col{display:flex;flex-direction:column;align-items:center;width:28px;flex-shrink:0}
+.prog-dot{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--surface2);border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:800;color:var(--muted);flex-shrink:0;
+  transition:all .35s;
+}
+.prog-item.done .prog-dot{background:var(--success);border-color:var(--success);color:white}
+.prog-item.cur .prog-dot{background:var(--accent);border-color:var(--accent);color:white}
+.prog-line{width:2px;flex:1;min-height:10px;background:var(--border);margin:3px 0}
+.prog-content{padding-bottom:14px}
+.prog-role{font-size:15px;font-weight:800;color:var(--text);margin-bottom:2px}
+.prog-desc{font-size:13px;color:var(--muted);line-height:1.55}
+
+/* ── Mantra (gold declaration card) ── */
+.mantra{
+  background:linear-gradient(135deg,rgba(176,125,32,.1) 0%,rgba(91,79,207,.06) 100%);
+  border:2px solid rgba(176,125,32,.25);border-radius:18px;
+  padding:0 40px;text-align:center;flex:1;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.mantra-main{font-size:38px;font-weight:900;color:var(--gold);line-height:1.45}
+
+/* ── Animations ── */
+.show{opacity:1!important;transform:none!important}
+.fade-in{opacity:0;transform:translateY(10px);transition:opacity .35s ease,transform .35s ease}
+.slide-left{opacity:0;transform:translateX(-20px);transition:opacity .5s ease,transform .5s ease}
+
+@keyframes pop{0%{transform:scale(.95)}60%{transform:scale(1.02)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
+
+/* ── Responsive ── */
+@media(orientation:landscape){
+  .slide{width:min(94vw,calc((100vh - 96px) * 16 / 9))!important;max-width:1440px!important}
+}
+@media(max-width:768px){
+  .left{width:35%;padding:14px 16px}
+  .right{padding:14px 16px}
+  .hd{padding:12px 20px}
+  .hd-title{font-size:18px}
+  .big-claim{font-size:20px}
+}
+
+/* ── Reduced Motion ── */
+@media(prefers-reduced-motion:reduce){
+  .fade-in,.slide-left{transition:none;opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<div class="slide">
+
+  <!-- Header -->
+  <div class="hd">
+    <div class="hd-left">
+      <div class="hd-tag">[模块标签，如 "Section 3 · 核心机制"]</div>
+      <div class="hd-title">[页面标题]</div>
+    </div>
+    <div class="hd-right">
+      <button class="btn-reset" onclick="resetAll()" style="display:none">重置</button>
+      <button class="btn-next" id="btnNext" onclick="nextStep()">下一步 →</button>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="body">
+
+    <!-- Left Panel -->
+    <div class="left">
+      <div>
+        <div class="section-label">[小标签]</div>
+        <div class="big-claim">
+          [核心观点]<br>
+          <span class="em-blue">[强调词]</span>
+        </div>
+      </div>
+
+      <div class="desc-text">
+        [正文说明]
+      </div>
+
+      <!-- Analogy -->
+      <div class="analogy">
+        <b>通俗理解：</b>[生活化类比，2-3 句话]
+      </div>
+
+      <!-- Tip -->
+      <div class="tip green">
+        <b>关键结论：</b>[一句话总结]
+      </div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="right">
+      <!-- 在这里放交互内容：Tab切换 / 步骤推进 / 可视化 / 对比 -->
+    </div>
+
+  </div>
+</div>
+<script src="nav-inject.js?v=2026"></script>
+<script>
+// ===== Step-by-Step Logic =====
+let step = 0;
+const maxSteps = 3; // 根据实际内容修改
+
+function nextStep() {
+  step++;
+  updateUI();
+  if (step >= maxSteps) {
+    document.getElementById('btnNext').disabled = true;
+  }
+}
+
+function resetAll() {
+  step = 0;
+  document.getElementById('btnNext').disabled = false;
+  updateUI();
+}
+
+function updateUI() {
+  // 在这里实现步骤切换逻辑
+}
+</script>
+</body>
+</html>

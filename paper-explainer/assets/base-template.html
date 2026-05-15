@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[论文标题] — 通俗讲解</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* === CSS VARIABLES === */
+    :root {
+      --primary: #4f46e5;
+      --primary-light: #818cf8;
+      --accent: #f59e0b;
+      --bg: #0f172a;
+      --bg-card: #1e293b;
+      --bg-card2: #334155;
+      --text: #e2e8f0;
+      --text-dim: #94a3b8;
+      --green: #10b981;
+      --red: #ef4444;
+      --blue: #3b82f6;
+      --pink: #ec4899;
+      --cyan: #06b6d4;
+      --orange: #f97316;
+      --radius: 12px;
+    }
+
+    /* === RESET & BASE === */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans SC', 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+    a { color: var(--primary-light); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* === HERO === */
+    .hero {
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+      padding: 2rem;
+    }
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .hero .paper-meta {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+    .hero .subtitle {
+      color: var(--text-dim);
+      max-width: 700px;
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+
+    /* === SIDE NAV === */
+    .side-nav {
+      position: fixed;
+      right: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      z-index: 100;
+    }
+    .side-nav a {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: block;
+      transition: all 0.3s;
+      position: relative;
+    }
+    .side-nav a::after {
+      content: attr(title);
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      white-space: nowrap;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .side-nav a:hover::after { opacity: 1; }
+    .side-nav a:hover, .side-nav a.active {
+      background: var(--primary-light);
+      transform: scale(1.4);
+    }
+
+    /* === CONTAINER === */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 2rem 4rem;
+    }
+
+    /* === SECTION === */
+    .section {
+      margin-bottom: 4rem;
+    }
+    .section-title {
+      font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      color: #fff;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 2px solid var(--primary);
+    }
+    .section-title .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      background: var(--primary);
+      border-radius: 50%;
+      font-size: 0.9rem;
+      margin-right: 0.8rem;
+      color: #fff;
+      font-weight: 700;
+    }
+
+    /* === CARD === */
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .card h3 {
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+      font-size: 1.15rem;
+    }
+    .card p, .card li {
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .card ul { padding-left: 1.5rem; }
+    .card li { margin-bottom: 0.4rem; }
+
+    /* === TERM-BOX === */
+    .term-box {
+      position: relative;
+      color: var(--primary-light);
+      border-bottom: 1px dashed var(--primary-light);
+      cursor: help;
+      font-weight: 600;
+    }
+    .tip {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a1a2e;
+      border: 1px solid var(--primary);
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      width: max-content;
+      max-width: 320px;
+      z-index: 100;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--text);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .term-box:hover .tip { display: block; }
+
+    /* === ANALOGY === */
+    .analogy {
+      background: linear-gradient(135deg, rgba(79,70,229,0.15), rgba(245,158,11,0.1));
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.5rem;
+      margin: 1.2rem 0;
+      color: var(--text);
+      line-height: 1.8;
+      font-size: 0.95rem;
+    }
+
+    /* === FADE-IN ANIMATION === */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s, transform 0.6s;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* === TAB === */
+    .tab-bar {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .tab-btn {
+      background: transparent;
+      color: var(--text-dim);
+      border: 1px solid var(--bg-card2);
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px 8px 0 0;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+    .tab-btn.active {
+      color: #fff;
+      background: var(--bg-card);
+      border-color: var(--primary);
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* === INSIGHT SECTIONS (9 & 10) === */
+    .insight-card {
+      background: linear-gradient(135deg, rgba(79,70,229,0.2), rgba(139,92,246,0.1));
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(79,70,229,0.3);
+    }
+    .insight-card h3 { color: var(--primary-light); margin-bottom: 0.8rem; }
+    .insight-highlight {
+      background: var(--bg-card);
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.5rem;
+      margin: 1rem 0;
+    }
+    .product-card {
+      background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(16,185,129,0.1));
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(245,158,11,0.2);
+    }
+    .product-card h3 { color: var(--accent); margin-bottom: 0.8rem; }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 700px) {
+      .side-nav { right: 0.5rem; gap: 0.5rem; }
+      .side-nav a { width: 8px; height: 8px; }
+      .container { padding: 0 1rem; }
+      .card { padding: 1rem; }
+      .analogy { padding: 1rem; font-size: 0.9rem; }
+      .tip { max-width: 250px; font-size: 0.8rem; }
+    }
+
+    /* === REDUCED MOTION === */
+    @media (prefers-reduced-motion: reduce) {
+      .fade-in { transition: none; opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- === SIDE NAV === -->
+  <nav class="side-nav" id="sideNav">
+    <a href="#s1" title="论文背景"></a>
+    <a href="#s2" title="核心思想"></a>
+    <a href="#s3" title="关键技术 A"></a>
+    <a href="#s4" title="关键技术 B"></a>
+    <a href="#s5" title="整体架构"></a>
+    <a href="#s6" title="关键技术 C"></a>
+    <a href="#s7" title="训练策略"></a>
+    <a href="#s8" title="实验结果"></a>
+    <a href="#s9" title="设计原理"></a>
+    <a href="#s10" title="产品启发"></a>
+  </nav>
+
+  <!-- === HERO === -->
+  <section class="hero">
+    <h1>[论文标题]</h1>
+    <p class="paper-meta">[作者] · [发表时间] · [机构]</p>
+    <p class="subtitle">[一段话概述论文的核心贡献和意义，面向非技术背景的产品经理]</p>
+  </section>
+
+  <div class="container">
+
+    <!-- Section 1: 论文背景 -->
+    <section class="section fade-in" id="s1">
+      <h2 class="section-title"><span class="num">1</span> 论文背景：为什么要写这篇论文？</h2>
+      <!-- card 内容 -->
+    </section>
+
+    <!-- Section 2: 核心思想 -->
+    <section class="section fade-in" id="s2">
+      <h2 class="section-title"><span class="num">2</span> 核心思想：一句话概括</h2>
+    </section>
+
+    <!-- Section 3-8: 技术讲解 -->
+    <section class="section fade-in" id="s3">
+      <h2 class="section-title"><span class="num">3</span> [关键技术 A]</h2>
+    </section>
+
+    <section class="section fade-in" id="s4">
+      <h2 class="section-title"><span class="num">4</span> [关键技术 B]</h2>
+    </section>
+
+    <section class="section fade-in" id="s5">
+      <h2 class="section-title"><span class="num">5</span> 整体架构</h2>
+    </section>
+
+    <section class="section fade-in" id="s6">
+      <h2 class="section-title"><span class="num">6</span> [关键技术 C]</h2>
+    </section>
+
+    <section class="section fade-in" id="s7">
+      <h2 class="section-title"><span class="num">7</span> 训练与优化</h2>
+    </section>
+
+    <section class="section fade-in" id="s8">
+      <h2 class="section-title"><span class="num">8</span> 实验结果</h2>
+    </section>
+
+    <!-- Section 9: 技术突破的设计原理 (必选) -->
+    <section class="section fade-in" id="s9">
+      <h2 class="section-title"><span class="num">9</span> 技术突破的设计原理</h2>
+      <!-- 参考 insight-writing-guide.md 中的写作框架 -->
+    </section>
+
+    <!-- Section 10: 对 AI 产品构建的启发 (必选) -->
+    <section class="section fade-in" id="s10">
+      <h2 class="section-title"><span class="num">10</span> 对 AI 产品构建的启发</h2>
+      <!-- 参考 insight-writing-guide.md 中的写作框架 -->
+    </section>
+
+  </div>
+
+  <script>
+    // ===== Fade-In Animation (IntersectionObserver) =====
+    const fadeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+
+    // ===== Side Nav Active State =====
+    const allSections = document.querySelectorAll('.section');
+    const navLinks = document.querySelectorAll('.side-nav a');
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          navLinks.forEach(l => {
+            if (l.getAttribute('href') === '#' + e.target.id) {
+              l.classList.add('active');
+            }
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+    allSections.forEach(s => sectionObserver.observe(s));
+
+    // ===== Tab Switching =====
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tabId = btn.dataset.tab;
+        // Deactivate all
+        btn.parentElement.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        // Activate target
+        btn.classList.add('active');
+        const target = document.getElementById(tabId);
+        if (target) target.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
