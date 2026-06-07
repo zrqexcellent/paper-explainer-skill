@@ -1,6 +1,6 @@
 ---
 name: paper-explainer
-description: AI 论文交互式讲解页面生成器。将 AI 领域论文转化为面向非技术背景产品经理的多页交互式 HTML 幻灯片。每页一个 16:9 幻灯片，左栏讲解 + 右栏交互演示。触发条件：(1) 用户提供论文标题/链接并要求讲解、解读、分析 (2) 用户说"帮我讲讲这篇论文"、"论文解读"、"论文讲解"、"解释论文" (3) 用户要求将论文内容做成交互式网页/HTML页面/幻灯片。受众：AI 产品经理，无需技术背景。输出：多文件幻灯片组 + 目录页，暖白纸质感设计。交付到 `D:\wps_intern\wps AI产品总监\{论文简称}-explainer\`。
+description: AI 论文交互式讲解页面生成器。将 AI 领域论文转化为面向非技术背景产品经理的多页交互式 HTML 幻灯片。每页一个 16:9 幻灯片，左栏讲解 + 右栏交互演示。触发条件：(1) 用户提供论文标题/链接并要求讲解、解读、分析 (2) 用户说"帮我讲讲这篇论文"、"论文解读"、"论文讲解"、"解释论文" (3) 用户要求将论文内容做成交互式网页/HTML页面/幻灯片。受众：AI 产品经理，无需技术背景。输出：多文件幻灯片组 + 目录页，暖白纸质感设计。
 ---
 
 # Paper Explainer
@@ -59,7 +59,7 @@ description: AI 论文交互式讲解页面生成器。将 AI 领域论文转化
 3. **内联导航脚本**：在每个页面 `</body>` 前内联导航代码（含 `SLIDE_ORDER` + 底部浮动导航条 + 键盘/触摸事件）。**禁止**使用 `<script src="nav-inject.js">` 外部引用，`file://` 协议下会加载失败导致导航完全失效。详见 [gotchas.md](references/gotchas.md) 第 1 条
 4. **CSS 变量统一**：所有页面使用相同的 `:root` 变量集
 5. **页面结构统一**：`.slide` > `.hd`(header) + `.body`(左+右)
-6. **直接在交付目录生成**：所有 HTML 文件必须**直接生成到** `D:\wps_intern\wps AI产品总监\{论文简称}-explainer\`，不要先生成到灵犀工作区（`lingxi-claw`）再复制。使用 `os.makedirs(exist_ok=True)` 确保目录存在，`open()` 直接写到目标路径。论文简称从标题中提取英文关键词（如 ReAct → `react-explainer`，Chain-of-Thought → `cot-explainer`）
+6. **直接在交付目录生成**：所有 HTML 文件必须**直接生成到**交付目录，不要先生成到灵犀工作区（`lingxi-claw`）再复制。使用 `os.makedirs(exist_ok=True)` 确保目录存在，`open()` 直接写到目标路径。论文简称从标题中提取英文关键词（如 ReAct → `react-explainer`，Chain-of-Thought → `cot-explainer`）
 
 7. **禁止 `\uXXXX` Unicode 转义**：所有中文内容（包括 JS 中的字符串、HTML 文本、CSS content 等）一律使用 UTF-8 原生中文字符。绝不能写 `"\u505a\u68a6"` 而应直接写 `"做梦"`。这是硬性规则，违反会导致用户看到乱码。详见 [gotchas.md](references/gotchas.md) 第 8 条
 
@@ -71,9 +71,7 @@ description: AI 论文交互式讲解页面生成器。将 AI 领域论文转化
 
 ### 第 5 步：交付
 
-**交付路径**：`D:\wps_intern\wps AI产品总监\{论文简称}-explainer\`
-
-HTML 文件已在生成阶段直接写入上述目录，无需额外复制操作。仅生成 `.html` 文件即可，因为导航代码已完全内联。
+HTML 文件已在生成阶段直接写入交付目录，无需额外复制操作。仅生成 `.html` 文件即可，因为导航代码已完全内联。
 
 告知用户：交付目录路径、幻灯片总数、导航方式（底部浮动导航条 + 键盘 Cmd+左右箭头 + 触摸滑动）、建议从 `index.html` 开始浏览。用 `file:///` 协议链接指向交付目录中的 `index.html`。
 
